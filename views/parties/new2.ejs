@@ -1,0 +1,178 @@
+<%- include('../partials/header2') %>
+<main>
+    <section class="pt-4 pt-md-5 pb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mx-auto text-center">
+                    <h1 class="fs-2 mb-2" id="GB_font">파티 만들기</h1>
+                    <p class="mb-5" id="GM_font">자신과 맞는 파티원들을 모집해보세요!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto" id="GM_font">
+                    <form action="/parties/new" method="POST" class="needs-validation" novalidate>
+    
+                        <!-- Owner Detail START -->
+                        <div class="card shadow">
+                            <!-- Card header -->
+                            <div class="card-header border-bottom">
+                                <h5 class="mb-2"></h5>
+                            </div>
+    
+                            <!-- Card body -->
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    
+                                    <div class="col-12 mb-4">
+                                        <label class="form-label" id=""><i class="bi bi-camera-reels"></i> 보고 싶은 OTT를 선택해주세요!</label>
+                                        <div class="">
+                                            <input type="radio" class="btn-check" name="ott_name" id="option1" value="넷플릭스" autocomplete="off" checked>
+                                            <label class="btn btn-outline-secondary" for="option1">넷플릭스</label>
+                                
+                                            <input type="radio" class="btn-check" name="ott_name" id="option2" value="티빙" autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="option2">티빙</label>
+                                
+                                            <input type="radio" class="btn-check" name="ott_name" id="option3" value="웨이브" autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="option3">웨이브</label>
+                                
+                                            <input type="radio" class="btn-check" name="ott_name" id="option4" value="디즈니플러스" autocomplete="off">
+                                            <label class="btn btn-outline-secondary" for="option4">디즈니플러스</label>
+                                        </div>
+                                    </div>
+    
+                                   
+                                    <div class="col-md-6 mb-4">
+                                        <label for="firstName" class="form-label">계정 아이디</label>
+                                        <input type="text" name="owner_id" class="form-control" id="firstName" placeholder="OTT에 가입된 본인 계정의 아이디" value="" required>
+                                    </div>
+    
+                                    
+                                    <div class="col-md-6 mb-4">
+                                        <label for="firstName" class="form-label">계정 비밀번호</label>
+                                        <input type="text" name="owner_password" class="form-control" id="firstName" placeholder="OTT에 가입된 본인 계정의 비밀번호" value="" required>
+                                    </div>
+    
+                                    
+                                    
+                                        <label class="form-label mb-0"><i class="bi bi-credit-card"></i> 정산 받을 본인의 계좌 은행과 번호를 입력해주세요!</label>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="country" class="form-label">은행</label>
+                                            <select class="form-select" name="account_bank" id="country" required>
+                                              <option value="">선택해주세요.</option>
+                                              <option>KEB하나</option>
+                                              <option>KB국민</option>
+                                              <option>신한</option>
+                                              <option>NH농협</option>
+                                              <option>우리</option>
+                                              <option>씨티</option>
+                                              <option>우체국</option>
+                                              <option>대구</option>
+                                              <option>IBK기업</option>
+                                              <option>케이뱅크</option>
+                                              <option>카카오뱅크</option>
+                                              <option>토스</option>
+                                            </select>
+                                            <div class="invalid-feedback">
+                                              Please select a valid country.
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 mb-4">
+                                            <label for="address" class="form-label">계좌번호</label>
+                                            <input type="text" name="account_number" class="form-control" id="address" placeholder="" required>
+                                            <div class="invalid-feedback">
+                                              Please enter your shipping address.
+                                            </div>
+                                        </div>
+
+                                    
+    
+                                    
+                                    <div class="col-md-12 mb-4">
+                                        
+                                        <label class="form-label"><i class="bi bi-people-fill"></i> 몇 명의 파티원을 모집하실건가요?</label>
+                                        <p><small>(파티장 포함)</small></p>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="members_num" id="inlineRadio1" value="4">
+                                                <label class="form-check-label" for="inlineRadio1">4</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="members_num" id="inlineRadio2" value="3">
+                                                <label class="form-check-label" for="inlineRadio2">3</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="members_num" id="inlineRadio2" value="2">
+                                                <label class="form-check-label" for="inlineRadio2">2</label>
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    
+                                    <div class="col-md-12 mb-1">
+                                        <label class="form-label"><i class="bi bi-bookmarks"></i> #태그로 파티를 소개해보세요!</label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox1" value="늦덕">
+                                                <label class="form-check-label" for="inlineCheckbox1">늦덕</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox1" value="얕덕">
+                                                <label class="form-check-label" for="inlineCheckbox1">얕덕</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="콘텐츠 마니아">
+                                                <label class="form-check-label" for="inlineCheckbox2">콘텐츠 마니아</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="과몰입">
+                                                <label class="form-check-label" for="inlineCheckbox2">과몰입</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="코미디">
+                                                <label class="form-check-label" for="inlineCheckbox2">코미디</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="하이틴">
+                                                <label class="form-check-label" for="inlineCheckbox2">하이틴</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="외국어 공부">
+                                                <label class="form-check-label" for="inlineCheckbox2">외국어 공부</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="드라마">
+                                                <label class="form-check-label" for="inlineCheckbox2">드라마</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="영화">
+                                                <label class="form-check-label" for="inlineCheckbox2">영화</label>
+                                              </div>
+                                              <div class="form-check form-check-inline">
+                                                <input class="form-check-input" name="tag" type="checkbox" id="inlineCheckbox2" value="리얼리티">
+                                                <label class="form-check-label" for="inlineCheckbox2">리얼리티</label>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-end mt-2">
+                            <button class="btn btn-primary mb-0" type="submit">파티 생성</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include('../partials/footer2') %>

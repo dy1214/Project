@@ -1,0 +1,196 @@
+<%- include('../partials/header2') %>
+
+<style>
+    .background-1 {
+        /*background-image: url(/img/roberto-nickson-9ISAqlNk93o-unsplash.jpg);*/
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-color: #EEEEEE;
+        
+    }
+    
+    .main {font-family: 'Nanum Gothic', sans-serif;} /*hover*/
+
+
+    .card-div {
+      width: 560;
+    }
+
+    .party-h1 {
+      color: #5837D0;
+    }
+</style>
+
+
+<main>
+    <section class="pt-0">
+        <div class="container">
+            <div class="background-1 rounded-3 p-3 p-sm-5">
+               
+                <div class="row my-2 my-xl-5"> 
+                    <div class="col-md-8 mx-auto text-center"> 
+                        <h1 class="text-center text-secondary party-h1" id="GB_font" style="text-shadow:black;">파티 찾기</h1>
+                        <p class="mb-2 text-secondary" id="GM_font">관심 있는 파티를 찾아 가입하세요!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="pt-0" id="GM_font">
+        <div class="container party-list" id="party-list">
+
+          <div class="row g-4 align-items-center justify-content-between mb-4 mt-4">
+            
+            <div class="col-12 col-xl-8">
+              <h5 class="mb-0"> </h5>
+            </div>
+      
+            
+            <div class="col-xl-2">
+              <form class="form-control-bg-light">
+                <select class="form-select js-choice">
+                  <option value="">전체</option>
+                  <option>넷플릭스</option>
+                  <option>티빙</option>
+                  <option>웨이브</option>
+                  <option>디즈니플러스</option>
+                </select>
+              </form>
+            </div>
+          </div>
+          
+            <div class="row g-4 card-div">
+
+                <div class="row g-4">
+                    <% parties.reverse().forEach(function(party) { %>
+                    <div class="col-md-6 col-xl-4">
+                    <div class="card shadow-sm " style="text-align: center;">
+                        <div class="card-body">
+                        <h4 class="card-title" id="GB_font"><%= party.ott_name %></h4>
+                        <p class="card-text">
+                          <% party.tag.forEach (function(tags) { %>
+                          <button type="button" class="btn" style="--bs-btn-padding-y:.25rem; --bs-btn-padding-x:.5rem; --bs-btn-font-size:.75rem; background-color: #F0EBCE">
+                            #<%= tags %>
+                          </button>
+                          <% }) %>
+                        </p>
+                        <div class="  align-items-center">
+                            
+                            <% if (party.members.length != party.members_num) { %>
+                            <a class="btn btn-sm" type="button" style="background-color: #5837D0; --bs-btn-color: white;" data-bs-toggle="modal" 
+                            data-bs-target="#runModal<%= party._id %>" data-bs-whatever="@mdo">가입하기</a>
+                            <% } else { %>
+                              <a class="btn btn-sm btn-outline-secondary href="">모집완료</a>
+                              <% } %>
+                            <p class="pt-3 card-text"><%= party.members.length %>/<%= party.members_num %></p>
+                            <!-- href="/parties/<%= party._id %>/join" -->
+                            
+                        </div>
+        
+                        </div>
+                    </div>
+                    </div>
+        
+        
+                    <div id="runModal<%= party._id %>" class="modal fade" id="payment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">카드 정보 입력</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <h7 class="fw-bold"><i class="bi bi-exclamation-circle"></i> 파티 가입 후 결제를 위해 카드 정보를 먼저 입력해주세요!</h7>
+                            <hr>
+                            <form action="/user/payment" method="POST" class="needs-validation" novalidate>
+        
+                              <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">카드 번호:</label>
+                                <input type="text" name="card_num" class="form-control" id="recipient-name" placeholder="xxxx xxxx xxxx xxxx">
+                              </div>
+                              <div class="mb-3">
+                                <label for="message-text" class="col-form-label">카드 유효기간:</label>
+                                <input type="text" name="expiry" class="form-control" id="recipient-name" placeholder="MM/YY">
+                              </div>
+                              <div class="mb-3">
+                                <label for="message-text" class="col-form-label">생년월일:</label>
+                                <input type="text" name="birth" class="form-control" id="recipient-name" placeholder="YYMMDD">
+                              </div>
+                              <div class="mb-3">
+                                <label for="message-text" class="col-form-label">비밀번호 앞 두자리:</label>
+                                <input type="text" name="pwd_2digit" class="form-control" id="recipient-name">
+                              </div>
+                              <div class="modal-footer">
+                                <button class="btn btn-primary" type="submit" name="" type="button" data-bs-toggle="modal" 
+                                data-bs-target="#runModal2<%= party._id %>" data-bs-whatever="@mdo">카드등록</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+        
+        
+                    <div class="modal fade" id="runModal2<%= party._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">파티 가입하기</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            파티에 가입하시겠습니까?
+                          </div>
+                          <div class="modal-footer">
+                            <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</a>
+                            <a href="/parties/<%= party._id %>/join" type="button" class="btn btn-primary" type="submit">가입하기</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        
+        
+                    <% }); %> 
+                
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+    
+
+<%- include('../partials/footer2') %>
+
+<script>
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+    })
+
+
+    const exampleModal = document.getElementById('exampleModal')
+    exampleModal.addEventListener('show.bs.modal', event => {
+      // Button that triggered the modal
+      const button = event.relatedTarget
+      // Extract info from data-bs-* attributes
+      const recipient = button.getAttribute('data-bs-whatever')
+      // If necessary, you could initiate an AJAX request here
+      // and then do the updating in a callback.
+      //
+      // Update the modal's content.
+      const modalTitle = exampleModal.querySelector('.modal-title')
+      const modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+      modalTitle.textContent = `New message to ${recipient}`
+      modalBodyInput.value = recipient
+    })
+  </script>

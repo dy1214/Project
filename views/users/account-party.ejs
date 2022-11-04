@@ -1,0 +1,363 @@
+<%- include('../partials/header2') %>
+<style>
+    .star-rating {
+    /*border:solid 1px #ccc;*/
+    display:flex;
+    flex-direction: row-reverse;
+    font-size:1.5em;
+    justify-content:space-around;
+    padding:0.2em;
+    text-align:center;
+    width:5em;
+  }
+  
+  .star-rating input {
+    display:none;
+  }
+  
+  .star-rating label {
+    color:#ccc;
+    cursor:pointer;
+  }
+  
+  .star-rating :checked ~ label {
+    color:#fc0;
+  }
+  
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color:#fc0;
+  }
+
+
+  .starability-result {
+    position: relative;
+    width: 150px;
+    height: 30px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA8CAMAAABGivqtAAAAxlBMVEUAAACZmZn2viTHuJ72viOampqampr1viSampr3vySampqdnZ34wiX1vSSampr1vSOZmZmampr1viT2vSOampr2viT2viSampr2viSampr2vyX4vyWbm5v3vSSdnZ32wSadnZ36wCWcnJyZmZn/wSr/2ySampr2vSP2viSZmZn2vSSZmZn2vST2viSampr2viSbm5ubm5uZmZn1vSSampqbm5v2vSWampqampr3vSf5wiT5vyagoKD/xCmkpKT/yCSZmZn1vSO4V2dEAAAAQHRSTlMA+vsG9fO6uqdgRSIi7+3q39XVqZWVgnJyX09HPDw1NTAwKRkYB+jh3L6+srKijY2Ef2lpYllZUU5CKigWFQ4Oneh1twAAAZlJREFUOMuV0mdzAiEQBmDgWq4YTWIvKRqT2Htv8P//VJCTGfYQZnw/3fJ4tyO76KE0m1b2fZu+U/pu4QGlA7N+Up5PIz9d+cmkbSrSNr9seT3GKeNYIyeO5j16S28exY5suK0U/QKmmeCCX6xs22hJLVkitMImxCvEs8EG3SCRCN/ViFPqnq5epIzZ07QJJvkM9Tkz1xnkmXbfSvR7f4H8AtXBkLGj74mMvjM1+VHZpAZ4LM4K/LBWEI9jwP71v1ZEQ6dyvQMf8A/1pmdZnKce/VH1iIsdte4U8VEtY23xOujxtFpWDgKbfjD2YeEhY0OzfjGeLyO/XfnNpAcmcjDwKOXRfU1IyiTRyEkaiz67pb9oJHJb9vVqKfgjLBPyF5Sq9T0KmSUhQmtiQrJGPHVi0DoSabj31G2gW3buHd0pY85lNdcCk8xlNDPXMuSyNiwl+theIb9C7RLIpKvviYy+M6H8qGwSAp6Is19+GP6KxwnggJ/kq6Jht5rnRQA4z9zyRRaXssvyqp5I6Vutv0vkpJaJtnjpz/8B19ytIayazLoAAAAASUVORK5CYII=");
+    font-size: 0.1em;
+    color: transparent;
+  }
+  
+  .starability-result:after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    height: 30px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA8CAMAAABGivqtAAAAxlBMVEUAAACZmZn2viTHuJ72viOampqampr1viSampr3vySampqdnZ34wiX1vSSampr1vSOZmZmampr1viT2vSOampr2viT2viSampr2viSampr2vyX4vyWbm5v3vSSdnZ32wSadnZ36wCWcnJyZmZn/wSr/2ySampr2vSP2viSZmZn2vSSZmZn2vST2viSampr2viSbm5ubm5uZmZn1vSSampqbm5v2vSWampqampr3vSf5wiT5vyagoKD/xCmkpKT/yCSZmZn1vSO4V2dEAAAAQHRSTlMA+vsG9fO6uqdgRSIi7+3q39XVqZWVgnJyX09HPDw1NTAwKRkYB+jh3L6+srKijY2Ef2lpYllZUU5CKigWFQ4Oneh1twAAAZlJREFUOMuV0mdzAiEQBmDgWq4YTWIvKRqT2Htv8P//VJCTGfYQZnw/3fJ4tyO76KE0m1b2fZu+U/pu4QGlA7N+Up5PIz9d+cmkbSrSNr9seT3GKeNYIyeO5j16S28exY5suK0U/QKmmeCCX6xs22hJLVkitMImxCvEs8EG3SCRCN/ViFPqnq5epIzZ07QJJvkM9Tkz1xnkmXbfSvR7f4H8AtXBkLGj74mMvjM1+VHZpAZ4LM4K/LBWEI9jwP71v1ZEQ6dyvQMf8A/1pmdZnKce/VH1iIsdte4U8VEtY23xOujxtFpWDgKbfjD2YeEhY0OzfjGeLyO/XfnNpAcmcjDwKOXRfU1IyiTRyEkaiz67pb9oJHJb9vVqKfgjLBPyF5Sq9T0KmSUhQmtiQrJGPHVi0DoSabj31G2gW3buHd0pY85lNdcCk8xlNDPXMuSyNiwl+theIb9C7RLIpKvviYy+M6H8qGwSAp6Is19+GP6KxwnggJ/kq6Jht5rnRQA4z9zyRRaXssvyqp5I6Vutv0vkpJaJtnjpz/8B19ytIayazLoAAAAASUVORK5CYII=");
+    background-position: 0 -30px;
+  }
+  
+  .starability-result[data-rating="5"]::after {
+    width: 150px;
+  }
+  
+  .starability-result[data-rating="4"]::after {
+    width: 120px;
+  }
+  
+  .starability-result[data-rating="3"]::after {
+    width: 90px;
+  }
+  
+  .starability-result[data-rating="2"]::after {
+    width: 60px;
+  }
+  
+  .starability-result[data-rating="1"]::after {
+    width: 30px;
+  }
+  
+  @media screen and (-webkit-min-device-pixel-ratio: 2), screen and (min-resolution: 192dpi) {
+    .starability-result {
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAB4CAMAAACZ62E6AAABAlBMVEUAAACZmZmampr2vSObm5v/yiufn5+ampr1viP1viSZmZn2viOZmZmampqampr2viSampqampqcnJz5vyScnJz3wSf/wyn/xiujo6Oqqqr/0C/1vSOampr2viP2viOampr2viP2vST2viOampqampqampr1vyP3viSampr2vyT4vyX3viSbm5ubm5v5wCT8xSmgoKCampqampr3vyb2wiWenp72viOampqZmZmampr2viP2viP1viSampqbm5v2vyT3viObm5v4vyadnZ34wSSbm5v2viSZmZn2viP2vST2viP2viT1viOZmZn2viT2viX3viT3vyb2vyOZmZn1vSOZmZlNN+fKAAAAVHRSTlMA9uz4PQwS8O7r5+fTw4yMelw2MB0dFRELBgbS+/Hfu7uxqKWdg4N7ZmZMPi8pKRgPs0w7Nhb14drKw6Gck21tXkNDIyMZ1rDLycTBtaqVknlfV0sGP8ZwAAADW0lEQVRYw9zWvYqDQBSG4TPDoCAqKhYKQgoVLFaIgZCkiCBBUqVazv3fyu4aEXWdM85Uy779A+LP58AfTQgw73AwtxFiZIwbxMbUfuB3H4b49YNfZrbGodoI52+cm9hH9sbZwwAXOFbo2zjDsSzWxnecuuvaM8MpdtbEPs7y9azF5phZWrjERaWOPdpLbB81cICrgv3W4mvMLbU6RmFQeA5u5HhFEEbHLdWLsMxvHJXxW16Goh+ZqPyny1Az5j79SsCJoWHsBNAxQ9sNF26bWFuMC8v1LY+mmeTadjaqtaNnnXoxWBcde1nNWnzdb68xrOqvu22/MTzuPutujpJ122NvluSb8tTWk85CclDZQwLS0oa2TQpEKacsJy0kSJaQOKJxROKKxhWJ7zS+k9ijsUdim8Y2ZWNUFBP4pMKfOv8onX9WrsI5gd3VVLXtatxcuU0znGUHCUAS2DgrS6mT6hTzrXEjfIZj5Dk2xKkihqm4wKlQfQRqalhUP9UHo3FIPAG/Et44JVLsDDf0JHmB3OEByOwZES8hSAsviGjBdh3ylh6plmMnW4IyAUVJWcE/76vTell1EIaiMBwIAcWBA9GC0lIdKFXQQUsHVVCklN7ojf3+z3JOxYqK2TH555+K6CJJQtRbr9XtDmCnjH0AX9Va8J+liIMvDtRsCk2pEs6hKVexR2g7KuDihwt5a9MfprY0fkLXU9ZmFLpoJolN6GXKWWfZx0tHCocwKJSxC22ItYUEjmBUJHFjfYz1xQxlfaLiZsBExq2IPtbkNbLtOwwuGgjTLkH43mYtSzam7+1Bsr3nm5uExBQUozEh9V7N7uvmwZcqdpm0C6vJW63bZEuXtbrV2zpDzhrpYLBWMnY1mjV7JWFtMio7zbWniWFxvHnWm1yGxXmOPXP+L3YV2ysjnNhaZNeMcHPvuL27BMnVMaujljBAYyje4niH4g2ONyh+4PiB4gOODyjWcKxh1gZBNoJjEY4R/BLhF4IDEQ4QPBoEoyxH4+bxrUsHyxwxQlg0WHXqYifVLmo67cKY/UtaXFxBV26TLjuHrkp8BPJTMij1xQejdkgO24nf7dBOCRcbzQuNOR9Qs64GzzrfQa8It2oFAA6Zrga9xEeq1KHmLUHIiCAWInsg1x/MLqkMsItF8QAAAABJRU5ErkJggg==");
+      background-size: 30px auto;
+    }
+    .starability-result:after {
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAB4CAMAAACZ62E6AAABAlBMVEUAAACZmZmampr2vSObm5v/yiufn5+ampr1viP1viSZmZn2viOZmZmampqampr2viSampqampqcnJz5vyScnJz3wSf/wyn/xiujo6Oqqqr/0C/1vSOampr2viP2viOampr2viP2vST2viOampqampqampr1vyP3viSampr2vyT4vyX3viSbm5ubm5v5wCT8xSmgoKCampqampr3vyb2wiWenp72viOampqZmZmampr2viP2viP1viSampqbm5v2vyT3viObm5v4vyadnZ34wSSbm5v2viSZmZn2viP2vST2viP2viT1viOZmZn2viT2viX3viT3vyb2vyOZmZn1vSOZmZlNN+fKAAAAVHRSTlMA9uz4PQwS8O7r5+fTw4yMelw2MB0dFRELBgbS+/Hfu7uxqKWdg4N7ZmZMPi8pKRgPs0w7Nhb14drKw6Gck21tXkNDIyMZ1rDLycTBtaqVknlfV0sGP8ZwAAADW0lEQVRYw9zWvYqDQBSG4TPDoCAqKhYKQgoVLFaIgZCkiCBBUqVazv3fyu4aEXWdM85Uy779A+LP58AfTQgw73AwtxFiZIwbxMbUfuB3H4b49YNfZrbGodoI52+cm9hH9sbZwwAXOFbo2zjDsSzWxnecuuvaM8MpdtbEPs7y9azF5phZWrjERaWOPdpLbB81cICrgv3W4mvMLbU6RmFQeA5u5HhFEEbHLdWLsMxvHJXxW16Goh+ZqPyny1Az5j79SsCJoWHsBNAxQ9sNF26bWFuMC8v1LY+mmeTadjaqtaNnnXoxWBcde1nNWnzdb68xrOqvu22/MTzuPutujpJ122NvluSb8tTWk85CclDZQwLS0oa2TQpEKacsJy0kSJaQOKJxROKKxhWJ7zS+k9ijsUdim8Y2ZWNUFBP4pMKfOv8onX9WrsI5gd3VVLXtatxcuU0znGUHCUAS2DgrS6mT6hTzrXEjfIZj5Dk2xKkihqm4wKlQfQRqalhUP9UHo3FIPAG/Et44JVLsDDf0JHmB3OEByOwZES8hSAsviGjBdh3ylh6plmMnW4IyAUVJWcE/76vTell1EIaiMBwIAcWBA9GC0lIdKFXQQUsHVVCklN7ojf3+z3JOxYqK2TH555+K6CJJQtRbr9XtDmCnjH0AX9Va8J+liIMvDtRsCk2pEs6hKVexR2g7KuDihwt5a9MfprY0fkLXU9ZmFLpoJolN6GXKWWfZx0tHCocwKJSxC22ItYUEjmBUJHFjfYz1xQxlfaLiZsBExq2IPtbkNbLtOwwuGgjTLkH43mYtSzam7+1Bsr3nm5uExBQUozEh9V7N7uvmwZcqdpm0C6vJW63bZEuXtbrV2zpDzhrpYLBWMnY1mjV7JWFtMio7zbWniWFxvHnWm1yGxXmOPXP+L3YV2ysjnNhaZNeMcHPvuL27BMnVMaujljBAYyje4niH4g2ONyh+4PiB4gOODyjWcKxh1gZBNoJjEY4R/BLhF4IDEQ4QPBoEoyxH4+bxrUsHyxwxQlg0WHXqYifVLmo67cKY/UtaXFxBV26TLjuHrkp8BPJTMij1xQejdkgO24nf7dBOCRcbzQuNOR9Qs64GzzrfQa8It2oFAA6Zrga9xEeq1KHmLUHIiCAWInsg1x/MLqkMsItF8QAAAABJRU5ErkJggg==");
+      background-size: 30px auto;
+    }
+  }
+  
+</style>
+<main>
+    <section class="pt-3">
+        <div class="container" id="GM_font">
+            <div class="row">
+    
+                <!-- Sidebar START -->
+                <div class="col-lg-4 col-xl-3">
+                    <!-- Responsive offcanvas body START -->
+                    <div class="offcanvas-lg offcanvas-end" tabindex="-1" id="offcanvasSidebar" >
+                        <!-- Offcanvas header -->
+                        <div class="offcanvas-header justify-content-end pb-2">
+                            <button  type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasSidebar" aria-label="Close"></button>
+                        </div>
+    
+                        <!-- Offcanvas body -->
+                        <div class="offcanvas-body p-3 p-lg-0">
+                            <div class="card bg-light w-100">
+    
+                                
+                        
+    
+                                <!-- Card body START -->
+                                <div class="card-body p-3">
+                                    <!-- Avatar and content -->
+                                    <div class="text-center mb-3">
+                                        <!-- Avatar -->
+                                        <div class="avatar avatar-xl mb-2">
+                                            <img class="avatar-img rounded-circle border border-2 border-white" src="/img/man.png" alt="">
+                                        </div>
+                                        <h6 class="mb-0"><%= user.name %></h6>
+                                        <a href="#" class="text-reset text-primary-hover small"><%= user.username %></a>
+                                        <hr>
+                                    </div>
+    
+                                    <!-- Sidebar menu item START -->
+                                    <ul class="nav nav-pills-primary-soft flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="/user/<%= user._id %>/account/profile"><i class="bi bi-person fa-fw me-2"></i>My 프로필</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" href="/user/<%= user._id %>/account/party"><i class="bi bi-people fa-fw me-2"></i>My 파티</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="account-travelers.html"><i class="bi bi-wallet fa-fw me-2"></i>My 결제</a>
+                                        </li>
+                                        
+                                        
+                                    </ul>
+                                   
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>	
+                   	
+                </div>
+               
+    
+                <!-- Main content START -->
+                <div class="col-lg-8 col-xl-9 ps-xl-5">
+                    <div class="card border bg-transparent">
+                        <!-- Card header -->
+                        <div class="card-header bg-transparent border-bottom">
+                            <h4 class="card-header-title" id="GB_font">MY 파티</h4>
+                        </div>
+    
+                        <!-- Card body START -->
+                        <div class="card-body p-0">
+    
+                            <!-- Tabs -->
+                            <ul class="nav nav-tabs nav-bottom-line nav-responsive nav-justified">
+                                <li class="nav-item"> 
+                                    <a class="nav-link mb-0 active" data-bs-toggle="tab" href="#tab-1">정보</a> 
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link mb-0" data-bs-toggle="tab" href="#tab-2">리뷰</a> 
+                                </li>
+                            </ul>
+    
+                            <!-- Tabs content START -->
+                            <div class="tab-content p-2 p-sm-4" id="nav-tabContent">
+                            <% userData.party_id.forEach(party => { %>
+                                <!-- Tab content item START -->
+                                <div class="tab-pane fade show active" id="tab-1">
+                                    <h3 class="mb-4" id="GB_font"><%=party.ott_name%></h3>
+                                    <h6>파티원 (<%=party.members.length%>)</h6>
+                                    <% party.members.forEach(function(members) { %>
+                                        
+                                    <div class="card border mb-4 col-md-3">
+                                        <!-- Card header -->
+                                        <div class="card-header border-bottom d-md-flex justify-content-md-between align-items-center">
+                                            <!-- Icon and Title -->
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon-lg bg-light rounded-circle flex-shrink-0"><i class="fa-solid fa-plane"></i></div>	
+                                                <!-- Title -->
+                                                <div class="ms-">
+                                                    <h6 class="card-title mb-0"><i class="bi bi-person-fill"></i> <%=members%></h6>
+                                                    <ul class="nav nav-divider small">
+                                                         
+                                                        
+                                                        <li class="nav-item">닉네임 :
+                                                        
+                                                        <% if (members == party.profile.nickname) { %>
+                                                            <%= party.profile.nickname %> </li>
+
+                                                        <% } %>
+                                                        
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            
+                                            <% if (members == party.author.name) { %>
+                                            <div class="mt-2 mt-md-0">
+                                                <a href="#" class="btn btn-primary mb-0 btn-sm">파티장</a>
+                                            </div>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                    
+                                    <% }) %>
+                                    <div class="col-md-6 owner"> <!--if 계정주인이 버튼누르면 state가 true가 되면서 아이디비번 공개-->
+										<label class="form-label">계정 아이디/비밀번호<span class="text-danger"></span></label>
+										<div class="input-group">
+											<input type="text" class="form-control" value="<%=party.owner_id %>" placeholder="">
+											<input type="password" id="hidePassword" class="form-control" value="<%=party.owner_password %>" placeholder="">
+                                            <!--<input type="button" id="showPassword" value="show" class="button">-->
+										</div>
+									</div>
+
+                                    <h6 class="mt-4" id="GL_font">OTT에서 사용할 닉네임을 설정해주세요<span class="text-danger">*</span></label></h6>
+                                    
+                                    <div class="mt-2 mt-md-0">
+                                        <button type="button" href="#" class="btn btn-primary mb-0" data-bs-toggle="modal" data-bs-target="#runModal<%= party._id %>" data-bs-whatever="">닉네임 설정</button>
+                                    </div>
+
+                                    <div class="mt-4">
+                                    <h6 id="GL_font"><i class="bi bi-caret-right-fill"></i> 파티 인원 수가 다 차게 되면 밑에 버튼이 나타납니다!</h6>
+                                    <h6 id="GL_font"><i class="bi bi-caret-right-fill"></i> 결제하기 버튼을 누르면 이메일로 파티장의 계좌 정보가 발송됩니다.</h6>
+                                    <% if (party.members.length == party.members_num) { %>
+                                    <!-- Button -->
+                                    <div class="mt-2 mt-md-0">
+                                        <form action="/user/<%= userData._id %>/account/email" method="post">
+                                            <button type="submit" class="btn btn-primary mb-0">결제하기</a>
+                                        </form>
+                                    </div>
+                                    
+                                    <% } %>
+                                    <hr class="mt-5" style="border: 1px solid #6B728E;" width="90%">
+                                    </div>
+                                    
+
+                                </div>
+                                
+                                
+    
+                                
+                                <div class="tab-pane fade" id="tab-2">
+                                    <div>
+                                        <% if (userData) { %>
+                                            <h3><i class="bi bi-chat-right-text"></i> 콘텐츠 리뷰</h3>
+                                            <form action="/user/<%= userData._id %>/account/review" method="POST" class="mb-3 validated-form" novalidate>
+                                                <!-- <div class="mb-3">
+                                                    <label class="form-label" for="rating">Rating</label>
+                                                    <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+                                                </div> -->
+                                                <div class="star-rating">
+                                                    <input type="radio" id="5-stars" name="rating" value="5" />
+                                                    <label for="5-stars" title="Amazing">&#9733;</label>
+                                                    <input type="radio" id="4-stars" name="rating" value="4" />
+                                                    <label for="4-stars" title="Very good">&#9733;</label>
+                                                    <input type="radio" id="3-stars" name="rating" value="3" />
+                                                    <label for="3-stars" title="Average">&#9733;</label>
+                                                    <input type="radio" id="2-stars" name="rating" value="2" />
+                                                    <label for="2-stars" title="Not good">&#9733;</label>
+                                                    <input type="radio" id="1-stars" name="rating" value="1" />
+                                                    <label for="1-stars" title="Terrible">&#9733;</label>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="body">콘텐츠 이름</label>
+                                                    <textarea class="form-control" name="title" id="body" cols="30" rows="1" required></textarea>
+                                                    <label class="form-label" for="body">리뷰 작성</label>
+                                                    <textarea class="form-control" name="content" id="body" cols="30" rows="3" required></textarea>
+                                                    <div class="valid-feedback">
+                                                        Looks good!
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-primary">작성하기</button>
+                                            </form>
+                                            <% } %>
+                                            
+                                            <% partyData.reviews.reverse().forEach(review => { %>
+                                        
+                                            <div class="card mb-3 ">
+                                                <div class="card-body">
+                                                    <h5 class="card-title" id="GB_font"> <%=review.title%></h5>
+                                                    <p class="starability-result" data-rating="<%= review.rating %>"
+                                                        Rated: <%=review.rating%> stars
+                                                    </p>
+                                                    <!--<h6 class="card-subtitle mb-2 text-muted">By <%=review.user_id%></h6>-->
+                                                    <p class="card-text"> <%=review.content%></p>
+                                                    <% if(review.user_id == userData._id)  { %>
+                                                    <form action="/campgrounds/<%=campground._id%>/review/<%=review._id%>?_method=DELETE" method="POST">
+                                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                               
+                                            <% }) %>
+                                            
+                                        
+                                    </div>
+                                </div>
+                                
+
+                                <div class="modal fade" id="runModal<%= party._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalLabel">OTT 닉네임 설정</h1>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form id="nickname" action="/user/<%= userData._id %>/account/nickname/new" method="POST">
+                                            <div class="mb-3">
+                                              <label for="recipient-name" class="col-form-label">닉네임:</label>
+                                              <input type="text" class="form-control col-lg-4" id="nickname" name="nickname">
+                                             
+                                            </div>
+                                           
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                <!--<button type="button" class="btn btn-primary">저장</button>-->
+                                                <!--<a form="nickname" href="/user/<%= userData._id %>/account/nickname" type="button" class="btn btn-primary" type="submit">완료</a>-->
+                                                <button class="btn btn-primary" type="submit" name="" type="button" data-bs-toggle="modal" 
+                                                    data-bs-target="#runModal2<%= party._id %>" data-bs-whatever="@mdo">저장</button>
+                                              </div>
+                                            </form>
+                                        </div>
+                                        
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <% }) %>
+                            <!-- 닫기 -->
+                            </div>
+    
+                        </div>
+                       
+                    </div>
+    
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+
+
+
+</main>
+
+<script>
+    $(document).ready(function(){
+    $('#showPassword').on('click',function(){
+        $('#hidePassword').toggleClass('active');
+        if($('#hidePassword').hasClass('active')){
+            $(this).attr('class',"fa fa-eye-slash fa-lg")
+            .prev('#hidePassword').attr('type',"text");
+        }else{
+            $(this).attr('class',"fa fa-eye fa-lg")
+            .prev('#hidePassword').attr('type','password');
+        }
+    });
+});
+</script>
+
+
+<%- include('../partials/footer2') %>

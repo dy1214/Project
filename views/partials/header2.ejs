@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find.</title>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+
+	
+    <link rel="stylesheet" type="text/css" href="/public/css/rating.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+
+</head>
+<style>
+    @font-face{
+	src: url("/fonts/GmarketSansMedium.otf");
+    font-family: "Gsans"; 
+    }
+ 
+    #GM_font{
+    font-family: "Gsans";
+    }
+
+    @font-face{
+	src: url("/fonts/GmarketSansBold.otf");
+    font-family: "Gsans2"; 
+    }
+ 
+    #GB_font{
+    font-family: "Gsans2";
+    }
+
+    @font-face{
+	src: url("/fonts/GmarketSansLight.otf");
+    font-family: "Gsans3"; 
+    }
+ 
+    #GL_font{
+    font-family: "Gsans3";
+    }
+
+
+</style>
+<body>
+        <!-- Header START -->
+        <header class="navbar-light header-sticky" id="GM_font">
+            <!-- Logo Nav START -->
+            <nav class="navbar navbar-expand-xl">
+                <div class="container">
+                    <!-- Logo START -->
+                    <a class="navbar-brand" href="/">
+                        <img class="light-mode-item navbar-brand-item" src="/img/logo-.png" alt="logo">
+                        
+                    </a>
+                    <!-- Logo END -->
+        
+                    <!-- Responsive navbar toggler -->
+                    <button class="navbar-toggler ms-auto ms-sm-0 p-0 p-sm-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-animation">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </span>
+                <span class="d-none d-sm-inline-block small">Menu</span>
+                    </button>
+        
+                    <!-- Responsive category toggler -->
+                    <button class="navbar-toggler ms-sm-auto mx-3 me-md-0 p-0 p-sm-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCategoryCollapse" aria-controls="navbarCategoryCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="bi bi-grid-3x3-gap-fill fa-fw"></i><span class="d-none d-sm-inline-block small">Category</span>
+                    </button>
+        
+                    <!-- Main navbar START -->
+                    <div class="navbar-collapse collapse" id="navbarCollapse">
+                        <ul class="navbar-nav navbar-nav-scroll me-auto">
+        
+                            <!-- Nav item Listing -->
+                            
+                            <!-- Nav item Pages -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="GB_font" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Party</a>
+                                <ul class="dropdown-menu" aria-labelledby="pagesMenu">
+                                    <li> <a class="dropdown-item" href="/parties/new">파티 생성</a></li>
+                                    <li> <a class="dropdown-item" href="/parties/all">파티 목록</a></li>
+                        
+                                </ul>
+                            </li>
+        
+                            <!-- Nav item Account -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="GB_font" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Accounts</a>
+                                <ul class="dropdown-menu" aria-labelledby="accounntMenu">
+                                    <li> <a class="dropdown-item" href="/user/<%= user._id %>/account/profile">MY 프로필</a></li>
+                                    <li> <a class="dropdown-item" href="/user/<%= user._id %>/account/party">MY 파티</a></li>
+                
+                                </ul>
+                            </li>
+        
+                  <!-- Nav item link-->
+                        </ul>
+                    </div>
+                    <!-- Main navbar END -->
+        
+                    <!-- Nav category menu START -->
+                    <div class="navbar-collapse collapse" id="navbarCategoryCollapse">
+                        <ul class="navbar-nav navbar-nav-scroll nav-pills-primary-soft text-center ms-auto p-2 p-xl-0">
+                            
+                            
+        
+                            <!-- Nav item Cabs -->
+                            <li class="nav-item"> <a class="nav-link" href="/user/logout">logout</a></li>
+                        </ul>
+                    </div>
+                    <!-- Nav category menu END -->
+        
+                    <!-- Profile and Notification START -->
+                    <ul class="nav flex-row align-items-center list-unstyled ms-xl-auto">
+                        <!-- Profile dropdown START -->
+                        <li class="nav-item ms-3 dropdown">
+                            <!-- Avatar -->
+                            <a class="avatar avatar-sm p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="avatar-img rounded-2" src="/img/icons8-guest-24.png" alt="avatar">
+                    
+                            </a>
+        
+                            <ul class="dropdown-menu dropdown-animation dropdown-menu-end shadow pt-3" aria-labelledby="profileDropdown">
+                                <!-- Profile info -->
+                                <li class="px-3 mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Avatar -->
+                                        <div class="avatar me-3">
+                                            <img class="avatar-img rounded-circle shadow" src="/img/man2.png" alt="avatar">
+                                        </div>
+                                        <div>
+                                            <a class="h6 mt-2 mt-sm-0" href="#"><%=user.name%></a>
+                                            <p class="small m-0"><%=user.username%></p>
+                                        </div>
+                                    </div>
+                                </li>
+        
+                    
+        
+                            
+                            </ul>
+                        </li>
+                        <!-- Profile dropdown END -->
+                    </ul>
+                    <!-- Profile and Notification START -->
+        
+                </div>
+            </nav>
+            <!-- Logo Nav END -->
+        </header>
+        <!-- Header END -->
+    

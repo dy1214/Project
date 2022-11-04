@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find.</title>
+
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" 
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+
+
+</head>
+
+<style>
+    @font-face{
+	src: url("/fonts/GmarketSansMedium.otf");
+    font-family: "Gsans"; 
+    }
+ 
+    #GM_font{
+    font-family: "Gsans";
+    }
+
+    @font-face{
+	src: url("/fonts/GmarketSansBold.otf");
+    font-family: "Gsans2"; 
+    }
+ 
+    #GB_font{
+    font-family: "Gsans2";
+    }
+</style>
+<body>
+
+    <main>
+        <section class="mt-md-5" id="GM_font">
+            <div class="container h-100 px-0 px-sm-4 ">
+                <div class="row">
+              <div class="col-md-10 col-lg-8 col-xl-6 mx-auto">
+                <div class="bg-mode shadow rounded-3 overflow-hidden bg-opacity-10 p-4 p-sm-5">
+                    <a href="">
+                        <img class="h-50px mb-4" src="/img/logo-.png" alt="logo">
+                    </a>
+                            <h2 id="GB_font">로그인 </h2>
+                            
+                            <form action="/user/login" method="POST" class="validated-form mt-4" novalidate>
+                               
+                                <div class="mb-3">
+                                    <label class="form-label" for="exampleInputEmail1">Email</label>
+                                    <input type="email" name="username" class="form-control" id="" aria-describedby="emailHelp" placeholder="E-mail">
+                                    
+                                </div>
+
+                                
+                                <div class="mb-3">
+                                    <label class="form-label" for="exampleInputPassword1">Password</label>
+                                    <input type="password" name="password" class="form-control" id="" placeholder="*********">
+                                </div>
+
+                                
+                               
+                                <div class="row align-items-center">
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-primary">로그인</button>
+                                    </div>
+                                    <div class="col-sm-8 text-sm-end">
+                                        <span>아직 계정이 없으신가요? <a href="/user/register"><u>회원가입</u></a></span>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            <hr>
+                </div>
+              </div>
+            </div>
+            </div>
+        </section>
+    </main>
+
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+</body>
+</html>
