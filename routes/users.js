@@ -210,7 +210,7 @@ router.post("/user/:id/account/email", isLoggedIn, (req, res) => {
                     const message = {
                         from: "findparty2022@gmail.com",
                         to: `${req.user.name}<${req.user.username}>`, // 받는 사람
-                        subject: `[FIND] ${req.user.name}님의 파티 매칭이 완료되었습니다!`, // 제목
+                        subject: `<Find.> ${req.user.name}님의 파티 매칭이 완료되었습니다!`, // 제목
                         text: '', // 내용
                         html: `<style>
                                     @font-face{
@@ -223,7 +223,8 @@ router.post("/user/:id/account/email", isLoggedIn, (req, res) => {
                                     }
                                 </style>
                                 <div id='GM_font' style='text-align:center; width:100%; height:100%;'>
-                                <h1>${req.user.name}님, OTT 이용을 위해 아래 파티장의 계좌로 금액을 입금해주세요!</h1><br>
+                                <h1>${req.user.name}님, </h1>
+                                <h1>${party.ott_name} 이용을 위해 아래 파티장의 계좌로 금액을 입금해주세요!</h1><br>
                                 
                                 <h2>${party.account_bank}은행</h2>
                                 <h2>${party.account_number}</h2>
@@ -267,14 +268,16 @@ router.post('/user/:id/account/nickname/new', isLoggedIn, (req, res) => {
                     res.redirect('back');
                 } else {
                     console.log(profile);
+                    profile.name = req.user.name;
                     profile.user_id = req.user._id;
                     profile.party_id = party._id;
                     profile.save();
 
                     party.profile._id = profile._id;
-                    party.profile.name = req.user.name;
                     party.profile.nickname = req.body.nickname;
+                    party.profile.name = req.user.name;
                     party.profile.push(profile);
+                    
                     party.save();
 
                     req.user.profile_id.push(profile._id);
@@ -288,10 +291,24 @@ router.post('/user/:id/account/nickname/new', isLoggedIn, (req, res) => {
     })
 })
 
+router.get("/user/:id/account/author", isLoggedIn, (req, res) => {
+    Party.findById(req.user.party_id, (err, party) => {
+        if (err) {
+            console.log(err);
+            req.flash('error', 'error');
+            res.redirect('back');
+        } else {
+            party.state = true;
+            party.save();
+
+            req.flash('success', 'success');
+            res.redirect('/user/:id/account/profile');
+        }
+    })
+});
 
 
-
-
+/*
 // params 주소에 포함된 변수 , body 폼 , query 주소 바깥의 ?이후의 변수
 // 파티 리뷰글 생성
 router.post('/user/:id/account/review', isLoggedIn, (req, res) => {
@@ -332,6 +349,43 @@ router.post('/user/:id/account/review', isLoggedIn, (req, res) => {
     })
     
 });
+*/
+
+
+
+// params 주소에 포함된 변수 , body 폼 , query 주소 바깥의 ?이후의 변수
+// 파티 리뷰글 생성
+router.post('/user/:id/account/review', isLoggedIn, (req, res) => {
+    Party.findById(req.params.id, (err, party) => {
+        if (err) {
+            console.log(err);
+            req.flash('error', 'error');
+            res.redirect('back');
+        } else {
+            Review.create({ title: req.body.title, content: req.body.content, rating: req.body.rating}, (err, review) => {
+                if (err) {
+                    console.log(err);
+                    req.flash('error', 'error');
+                    res.redirect('back');
+                } else {
+                    req.user.review_id.push(review._id);
+                    review.user_id = req.user._id;
+                    review.party_id = req.user.party_id;
+                    req.user.save();
+                    review.save();
+                    party.reviews.push(review);
+                    party.save();
+                    console.log(review);
+                    req.flash('success', 'Successfully');
+                    res.redirect("back");
+                }
+            })
+        }
+    }) 
+});
+
+
+
 
 
 

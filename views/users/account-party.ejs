@@ -79,6 +79,9 @@
     }
   }
   
+  #hidePassword {
+    cursor: pointer;
+  }
 </style>
 <main>
     <section class="pt-3">
@@ -155,7 +158,7 @@
                                     <a class="nav-link mb-0 active" data-bs-toggle="tab" href="#tab-1">정보</a> 
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link mb-0" data-bs-toggle="tab" href="#tab-2">리뷰</a> 
+                                    <a class="nav-link mb-0" data-bs-toggle="tab" href="#tab-2"></a> 
                                 </li>
                             </ul>
     
@@ -165,27 +168,30 @@
                                 <!-- Tab content item START -->
                                 <div class="tab-pane fade show active" id="tab-1">
                                     <h3 class="mb-4" id="GB_font"><%=party.ott_name%></h3>
-                                    <h6>파티원 (<%=party.members.length%>)</h6>
+                                    <button style="background-color: #E0ECE4; --bs-btn-color: #7D9D9C;" type="button" class="btn mb-4" data-bs-toggle="modal" data-bs-target="#Modal<%= party._id %>">
+                                        프로필
+                                    </button>
+                                    <button style="background-color: #E0ECE4; --bs-btn-color: #7D9D9C;" type="button" class="btn mb-4" data-bs-toggle="modal" data-bs-target="#Review<%= party._id %>">
+                                        커뮤니티
+                                    </button>
+                                    
+                                    
+                                    <h6 class="">파티원 (<%=party.members.length%>)</h6>
+                                
+                                    
                                     <% party.members.forEach(function(members) { %>
                                         
                                     <div class="card border mb-4 col-md-3">
                                         <!-- Card header -->
-                                        <div class="card-header border-bottom d-md-flex justify-content-md-between align-items-center">
+                                        <div style="height: 3em;"class="card-header border-bottom d-md-flex justify-content-md-between align-items-center">
                                             <!-- Icon and Title -->
                                             <div class="d-flex align-items-center">
                                                 <div class="icon-lg bg-light rounded-circle flex-shrink-0"><i class="fa-solid fa-plane"></i></div>	
                                                 <!-- Title -->
-                                                <div class="ms-">
+                                                <div class="ms-0">
                                                     <h6 class="card-title mb-0"><i class="bi bi-person-fill"></i> <%=members%></h6>
+                                                    
                                                     <ul class="nav nav-divider small">
-                                                         
-                                                        
-                                                        <li class="nav-item">닉네임 :
-                                                        
-                                                        <% if (members == party.profile.nickname) { %>
-                                                            <%= party.profile.nickname %> </li>
-
-                                                        <% } %>
                                                         
                                                     </ul>
                                                 </div>
@@ -193,7 +199,7 @@
                                             
                                             <% if (members == party.author.name) { %>
                                             <div class="mt-2 mt-md-0">
-                                                <a href="#" class="btn btn-primary mb-0 btn-sm">파티장</a>
+                                                <a href="#" class="btn mb-0 btn-sm" style="background-color: #D2DAFF; --bs-btn-color: #7895B2; ">파티장</a>
                                             </div>
                                             <% } %>
                                         </div>
@@ -202,49 +208,61 @@
                                     <% }) %>
                                     <div class="col-md-6 owner"> <!--if 계정주인이 버튼누르면 state가 true가 되면서 아이디비번 공개-->
 										<label class="form-label">계정 아이디/비밀번호<span class="text-danger"></span></label>
-										<div class="input-group">
+                                        <% if (party.state == true) { %>
+										<div class="input-group auth-id">
+                                            
 											<input type="text" class="form-control" value="<%=party.owner_id %>" placeholder="">
-											<input type="password" id="hidePassword" class="form-control" value="<%=party.owner_password %>" placeholder="">
+											<input type="text" id="hidePassword" class="form-control" value="<%=party.owner_password %>" placeholder="">
+                                           
+                                            
                                             <!--<input type="button" id="showPassword" value="show" class="button">-->
 										</div>
+                                        <% } %>
 									</div>
 
                                     <h6 class="mt-4" id="GL_font">OTT에서 사용할 닉네임을 설정해주세요<span class="text-danger">*</span></label></h6>
                                     
                                     <div class="mt-2 mt-md-0">
-                                        <button type="button" href="#" class="btn btn-primary mb-0" data-bs-toggle="modal" data-bs-target="#runModal<%= party._id %>" data-bs-whatever="">닉네임 설정</button>
+                                        <button style="background-color: #E0ECE4; --bs-btn-color: #7D9D9C;" type="button" href="#" class="btn mb-0" data-bs-toggle="modal" data-bs-target="#runModal<%= party._id %>" data-bs-whatever="">닉네임 설정</button>
                                     </div>
 
                                     <div class="mt-4">
-                                    <h6 id="GL_font"><i class="bi bi-caret-right-fill"></i> 파티 인원 수가 다 차게 되면 밑에 버튼이 나타납니다!</h6>
-                                    <h6 id="GL_font"><i class="bi bi-caret-right-fill"></i> 결제하기 버튼을 누르면 이메일로 파티장의 계좌 정보가 발송됩니다.</h6>
+                                    <h6 id="GL_font"><i class="bi bi-exclamation-circle"></i> 파티 인원 수가 다 차게 되면 밑에 버튼이 나타납니다!</h6>
+                                    <h6 id="GL_font"><i class="bi bi-exclamation-circle"></i> 결제하기 버튼을 누르면 이메일로 파티장의 계좌 정보가 발송됩니다.</h6>
                                     <% if (party.members.length == party.members_num) { %>
+                                        <% if (party.author.name != user.name) { %>
                                     <!-- Button -->
                                     <div class="mt-2 mt-md-0">
                                         <form action="/user/<%= userData._id %>/account/email" method="post">
-                                            <button type="submit" class="btn btn-primary mb-0">결제하기</a>
+                                            <button style="background-color: #D2DAFF; --bs-btn-color: #7895B2;" type="submit" class="btn mb-0">결제하기</a>
                                         </form>
                                     </div>
-                                    
+                                    <% } else { %>
+                                        
+                                            <div class="mt-2 mt-md-0">
+                                                <form action="/user/<%= userData._id %>/account/author">
+                                                    <button style="background-color: #D2DAFF; --bs-btn-color: #7895B2;" type="submit" class="btn btn-primary mb-0">결제확인</a>
+                                                </form>
+                                            </div>
+                                        <% } %>
                                     <% } %>
                                     <hr class="mt-5" style="border: 1px solid #6B728E;" width="90%">
                                     </div>
                                     
 
                                 </div>
-                                
+                            
                                 
     
-                                
-                                <div class="tab-pane fade" id="tab-2">
+                            
+
+                                <!--<div class="tab-pane fade" id="tab-2">-->
+                                    <!---
                                     <div>
                                         <% if (userData) { %>
                                             <h3><i class="bi bi-chat-right-text"></i> 콘텐츠 리뷰</h3>
                                             <form action="/user/<%= userData._id %>/account/review" method="POST" class="mb-3 validated-form" novalidate>
-                                                <!-- <div class="mb-3">
-                                                    <label class="form-label" for="rating">Rating</label>
-                                                    <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
-                                                </div> -->
+                                                
                                                 <div class="star-rating">
                                                     <input type="radio" id="5-stars" name="rating" value="5" />
                                                     <label for="5-stars" title="Amazing">&#9733;</label>
@@ -278,7 +296,7 @@
                                                     <p class="starability-result" data-rating="<%= review.rating %>"
                                                         Rated: <%=review.rating%> stars
                                                     </p>
-                                                    <!--<h6 class="card-subtitle mb-2 text-muted">By <%=review.user_id%></h6>-->
+                                                    
                                                     <p class="card-text"> <%=review.content%></p>
                                                     <% if(review.user_id == userData._id)  { %>
                                                     <form action="/campgrounds/<%=campground._id%>/review/<%=review._id%>?_method=DELETE" method="POST">
@@ -289,10 +307,10 @@
                                             </div>
                                                
                                             <% }) %>
-                                            
+                                        -->
                                         
-                                    </div>
-                                </div>
+                                   <!-- </div>
+                                </div> -->
                                 
 
                                 <div class="modal fade" id="runModal<%= party._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -325,7 +343,116 @@
                                     </div>
                                   </div>
 
-                                  <% }) %>
+
+
+                                  <div class="modal fade" id="Modal<%= party._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalLabel">프로필</h1>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="col-md-6">
+                                                
+                                                <% party.profile.forEach(profile => { %>
+                                                <label class="form-label"><i class="bi bi-cloud"></i> <%=profile.name %> :</label>   
+                                                <input type="text" class="form-control mb-4" value="<%=profile.nickname %>" placeholder="">
+                                                   
+                                                <% }) %>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                          <!--<button type="button" class="btn btn-primary">변경</button>-->
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="modal fade" id="Review<%= party._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h1 class="modal-title fs-5" id="exampleModalLabel">커뮤니티</h1>
+                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                <% if (userData) { %>
+                                                    <h3><i class="bi bi-chat-right-text"></i> 콘텐츠 리뷰</h3>
+                                                    <form action="/user/<%= party._id %>/account/review" method="POST" class="mb-3 validated-form" novalidate>
+                                                        <!-- <div class="mb-3">
+                                                            <label class="form-label" for="rating">Rating</label>
+                                                            <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+                                                        </div> -->
+                                                        <div class="star-rating">
+                                                            <input type="radio" id="5-stars" name="rating" value="5" />
+                                                            <label for="5-stars" title="Amazing">&#9733;</label>
+                                                            <input type="radio" id="4-stars" name="rating" value="4" />
+                                                            <label for="4-stars" title="Very good">&#9733;</label>
+                                                            <input type="radio" id="3-stars" name="rating" value="3" />
+                                                            <label for="3-stars" title="Average">&#9733;</label>
+                                                            <input type="radio" id="2-stars" name="rating" value="2" />
+                                                            <label for="2-stars" title="Not good">&#9733;</label>
+                                                            <input type="radio" id="1-stars" name="rating" value="1" />
+                                                            <label for="1-stars" title="Terrible">&#9733;</label>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="body">콘텐츠 이름</label>
+                                                            <textarea class="form-control" name="title" id="body" cols="30" rows="1" required></textarea>
+                                                            <label class="form-label" for="body">리뷰 작성</label>
+                                                            <textarea class="form-control" name="content" id="body" cols="30" rows="3" required></textarea>
+                                                            <div class="valid-feedback">
+                                                                Looks good!
+                                                            </div>
+                                                        </div>
+                                                        <button class="btn btn-primary">작성하기</button>
+                                                    </form>
+                                                    <% } %>
+                                                    
+                                                    <% partyData.reviews.forEach(review => { %>
+                                                
+                                                    <div class="card mb-3 ">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title" id="GB_font"> <%=review.title%></h5>
+                                                            <p class="starability-result" data-rating="<%= review.rating %>"
+                                                                Rated: <%=review.rating%> stars
+                                                            </p>
+                                                            <!--<h6 class="card-subtitle mb-2 text-muted">By <%=review.user_id%></h6>-->
+                                                            <p class="card-text"> <%=review.content%></p>
+                                                            <% if(review.user_id == userData._id)  { %>
+                                                            <form action="/<%=review._id%>?_method=DELETE" method="POST">
+                                                                <button class="btn btn-sm btn-danger">Delete</button>
+                                                            </form>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                       
+                                                    <% }) %>
+                                                    
+                                                
+                                            </div>
+
+
+
+
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                          <!--<button type="button" class="btn btn-primary">변경</button>-->
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                                
+
+
+
+                            <% }) %>
                             <!-- 닫기 -->
                             </div>
     
@@ -345,6 +472,7 @@
 </main>
 
 <script>
+    /*
     $(document).ready(function(){
     $('#showPassword').on('click',function(){
         $('#hidePassword').toggleClass('active');
@@ -356,6 +484,15 @@
             .prev('#hidePassword').attr('type','password');
         }
     });
+});
+*/
+
+$("#hidePassword").on("click", function() {
+  if ($("#hidePassword").attr("type") == "password") {
+    $("#hidePassword").attr("type", "text");
+  } else {
+    $("#hidePassword").attr("type", "password");
+  }
 });
 </script>
 

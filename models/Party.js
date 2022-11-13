@@ -9,8 +9,11 @@ let PartySchema = new mongoose.Schema({
     ott_name: String, // 넷플릭스, 티빙, 웨이브, 디즈니 플러스
 
     author: {
+        _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User' 
+        },
+        name: String
     },
 
     owner_id: String, // 파티장 주인 아이디
@@ -43,8 +46,8 @@ let PartySchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Profile'
         },
-        name: String,
-        nickname: String
+        nickname: String,
+        name: String
     }],
 });
 

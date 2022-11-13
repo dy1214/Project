@@ -87,8 +87,9 @@
                                     
                                     <div class="col-md-6">
                                         <label class="form-label">가입되어 있는 파티</label>
-                                        
-                                        <input type="text" class="form-control" value="" placeholder="">
+                                        <% userData.party_id.forEach(party => { %>
+                                        <input type="text" class="form-control mb-2" value="<%= party.ott_name %>" placeholder="">
+                                        <% }) %>
                                     </div>
                                     
     

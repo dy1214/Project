@@ -30,8 +30,8 @@
                
                 <div class="row my-2 my-xl-5"> 
                     <div class="col-md-8 mx-auto text-center"> 
-                        <h1 class="text-center text-secondary party-h1" id="GB_font" style="text-shadow:black;">파티 찾기</h1>
-                        <p class="mb-2 text-secondary" id="GM_font">관심 있는 파티를 찾아 가입하세요!</p>
+                        <h1 class="text-center party-h1" id="GB_font" style="color: #000000;">파티 찾기</h1>
+                        <p style="color: #000000;" class="mb-2" id="GM_font">관심 있는 파티를 찾아 가입하세요!</p>
                     </div>
                 </div>
             </div>
@@ -66,13 +66,14 @@
 
                 <div class="row g-4">
                     <% parties.reverse().forEach(function(party) { %>
+                      <% if (party.state == false) { %>
                     <div class="col-md-6 col-xl-4">
-                    <div class="card shadow-sm " style="text-align: center;">
+                    <div class="card shadow-sm " style="text-align: center;" >
                         <div class="card-body">
                         <h4 class="card-title" id="GB_font"><%= party.ott_name %></h4>
                         <p class="card-text">
                           <% party.tag.forEach (function(tags) { %>
-                          <button type="button" class="btn" style="--bs-btn-padding-y:.25rem; --bs-btn-padding-x:.5rem; --bs-btn-font-size:.75rem; background-color: #F0EBCE">
+                          <button type="button" class="btn mb-2" style="--bs-btn-padding-y:.25rem; --bs-btn-padding-x:.5rem; --bs-btn-font-size:.75rem; background-color: #E0ECE4; --bs-btn-color: #7D9D9C;">
                             #<%= tags %>
                           </button>
                           <% }) %>
@@ -80,7 +81,7 @@
                         <div class="  align-items-center">
                             
                             <% if (party.members.length != party.members_num) { %>
-                            <a class="btn btn-sm" type="button" style="background-color: #5837D0; --bs-btn-color: white;" data-bs-toggle="modal" 
+                            <a class="btn btn-sm" type="button" style="background-color: #D2DAFF; --bs-btn-color: #576F72;" data-bs-toggle="modal" 
                             data-bs-target="#runModal<%= party._id %>" data-bs-whatever="@mdo">가입하기</a>
                             <% } else { %>
                               <a class="btn btn-sm btn-outline-secondary href="">모집완료</a>
@@ -153,7 +154,8 @@
                       </div>
                     </div>
         
-        
+      
+                    <% } %>
                     <% }); %> 
                 
                 </div>

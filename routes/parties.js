@@ -42,7 +42,8 @@ router.post("/parties/new", isLoggedIn, (req, res) => {
     if (req.body.ott_name && req.body.owner_id && req.body.owner_password && req.body.account_bank && req.body.account_number && req.body.members_num) {
         let newParty = {}; 
         //newParty.ott_id = null;
-        newParty.author = req.user._id;
+        
+        //newParty.author.name = req.user.name;
         //newParty.author.push(req.user._id);
         newParty.ott_name = req.body.ott_name;
         newParty.owner_id = req.body.owner_id;
@@ -66,11 +67,13 @@ function createParty(newParty, req, res) {
         if (err) {
             console.log(err);
         } else {
+            party.author._id = req.user._id;
+            party.author.name = req.user.name;
             req.user.party_id.push(party._id);
             req.user.save();
             console.log(party);
             req.flash('success', 'Successfully made a new party');
-            res.redirect("/");
+            res.redirect("/parties/all");
         }
         addOTT(party);
     });
@@ -151,7 +154,7 @@ router.get("/parties/:id/join", isLoggedIn, (req, res) => {
                         } else {
                             //console.log(ott);
                             //console.log(ott.price);
-                            user.amount = user.amount + (ott.price / party.members_num);
+                            user.amount = Math.round(user.amount + (ott.price / party.members_num));
                             user.save();
                         }
                     })

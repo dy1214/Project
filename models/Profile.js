@@ -12,6 +12,7 @@ let ProfileSchema = new mongoose.Schema({
             ref: 'Party'
     },
     nickname: String,
+    name: String
 });
 
 let Profile = mongoose.model("Profile", ProfileSchema);
